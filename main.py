@@ -3,10 +3,12 @@ import Bullpen
 import time
 import sys
 
+
 def fifty_fifty():
     import random
 
     return random.randint(0, 100) < 50
+
 
 class MessageAction(Bullpen.Action):
     def __init__(self, message):
@@ -17,9 +19,10 @@ class MessageAction(Bullpen.Action):
         sys.stdout.write(f"{self.message} @ {t}            \r")
         sys.stdout.flush()
 
-main_action      = MessageAction("Main Action")
+
+main_action = MessageAction("Main Action")
 secondary_action = MessageAction("Secondary Action")
-tertiary_action  = MessageAction("Tertiary Action")
+tertiary_action = MessageAction("Tertiary Action")
 
 manager = Bullpen.Manager(
     {
@@ -29,23 +32,18 @@ manager = Bullpen.Manager(
         secondary_action: [
             Bullpen.Transition(
                 to=tertiary_action,
-                on=Bullpen.Condition(
-                    fifty_fifty
-                ).AND(
-                    Bullpen.Condition.Timer(10).OR(
-                    Bullpen.Condition.NEVER())
-                )
+                on=Bullpen.Condition(fifty_fifty).AND(
+                    Bullpen.Condition.Timer(10).OR(Bullpen.Condition.NEVER())
+                ),
             ),
             Bullpen.Transition(
                 to=main_action,
-                on=Bullpen.Condition(
-                    fifty_fifty
-                ).AND(
-                    Bullpen.Condition.Timer(10)
-                )
-            )
+                on=Bullpen.Condition(fifty_fifty).AND(Bullpen.Condition.Timer(10)),
+            ),
         ],
-        tertiary_action: Bullpen.Transition(to=main_action, on=Bullpen.Condition.Timer(2))
+        tertiary_action: Bullpen.Transition(
+            to=main_action, on=Bullpen.Condition.Timer(2)
+        ),
     }
 )
 

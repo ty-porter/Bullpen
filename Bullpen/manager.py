@@ -2,8 +2,8 @@ import Bullpen
 
 import time
 
-class Manager:
 
+class Manager:
     def __init__(self, config):
         self.config = Manager._convert_transitions_to_list(config)
         self.current_action = list(self.config.keys())[0]
@@ -35,11 +35,11 @@ class Manager:
                 return True
 
         return False
-    
+
     def reset_transition_conditions(self):
         for transition in self.current_transitions:
             transition.on.reset_condition()
-    
+
     @staticmethod
     def _convert_transitions_to_list(config):
         converted = {}
