@@ -13,19 +13,23 @@ class Manager:
     def perform(self):
         self.reset_transition_conditions()
 
-        while not self.ready_to_rotate():
+        self.current_action.on_rotate_to()
+
+        while not (self.ready_to_rotate() and self.current_action.ready_to_rotate()):
             self.current_action.on_perform()
 
             time.sleep(0.05)
 
-        return self.rotate()
+        self.current_action.on_rotate_from()
+
+        self.rotate()
 
     def rotate(self):
         self.current_action = self._next_action
         self.current_transitions = self.config[self.current_action]
         self._next_action = None
 
-        return self.perform()
+        self.perform()
 
     def ready_to_rotate(self):
         for transition in self.current_transitions:
