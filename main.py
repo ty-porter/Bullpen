@@ -24,27 +24,16 @@ main_action = MessageAction("Main Action")
 secondary_action = MessageAction("Secondary Action")
 tertiary_action = MessageAction("Tertiary Action")
 
-manager = Bullpen.Manager(
-    {
-        main_action: [
-            Bullpen.Transition(to=secondary_action, on=Bullpen.Condition.Timer(2))
-        ],
-        secondary_action: [
-            Bullpen.Transition(
-                to=tertiary_action,
-                on=Bullpen.Condition(fifty_fifty).AND(
-                    Bullpen.Condition.Timer(10).OR(Bullpen.Condition.NEVER())
-                ),
-            ),
-            Bullpen.Transition(
-                to=main_action,
-                on=Bullpen.Condition(fifty_fifty).AND(Bullpen.Condition.Timer(10)),
-            ),
-        ],
-        tertiary_action: Bullpen.Transition(
-            to=main_action, on=Bullpen.Condition.Timer(2)
-        ),
-    }
+main_action.add_transitions(
+    Bullpen.Transition(to=secondary_action, on=Bullpen.Condition.Timer(2))
 )
+secondary_action.add_transitions(
+    Bullpen.Transition(to=tertiary_action, on=Bullpen.Condition.Timer(3))
+)
+tertiary_action.add_transitions(
+    Bullpen.Transition(to=main_action, on=Bullpen.Condition.Timer(4))
+)
+
+manager = Bullpen.Manager(entrypoint=main_action)
 
 manager.perform()

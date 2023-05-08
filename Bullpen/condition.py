@@ -25,7 +25,7 @@ class Condition:
             return self.cond1() or self.cond2()
 
     def __init__(self, cond):
-        self.condition = Condition._And(cond, Condition.ALWAYS)
+        self.condition = Condition._And(cond, Condition.Always)
 
     def AND(self, cond):
         self.condition = Condition._And(self.condition, cond)
@@ -38,11 +38,11 @@ class Condition:
         return self
 
     @classmethod
-    def ALWAYS(cls):
+    def Always(cls):
         return Condition(lambda: True)
 
     @classmethod
-    def NEVER(cls):
+    def Never(cls):
         return Condition(lambda: False)
 
     def reset_condition(self):

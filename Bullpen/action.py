@@ -7,7 +7,7 @@ class Action:
 
     def refresh_rate(self):
         return self.DEFAULT_REFRESH_RATE
-    
+
     def on_rotate_to(self):
         pass
 
@@ -16,3 +16,14 @@ class Action:
 
     def ready_to_rotate(self):
         return True
+    
+    def add_transitions(self, *transitions):
+        for transition in transitions:
+            self.transitions.append(transition)
+
+    @property
+    def transitions(self):
+        if not hasattr(self, "_transitions"):
+            self._transitions = []
+
+        return self._transitions
